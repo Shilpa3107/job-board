@@ -9,15 +9,30 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Debug secret presence
+        run: |
+          if [ -z "$SESSION_SECRET" ]; then
+            echo "SESSION_SECRET is EMPTY or missing"
+          else
+            echo "SESSION_SECRET is set, length: ${#SESSION_SECRET}"
+          fi
+
       - run: npm install
+
       - run: npx prisma generate
+
       - run: npx tsc --noEmit
+
       - run: npm run build
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}

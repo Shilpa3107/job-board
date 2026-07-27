@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const JOB_TYPES = ["FULL_TIME", "PART_TIME", "REMOTE"];
 
@@ -75,63 +76,87 @@ export default function JobsPage() {
   }
 
   return (
-    <main className="max-w-2xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">Jobs</h1>
+    <main className="max-w-3xl mx-auto px-6 py-12">
+      <p className="font-mono-tag text-xs tracking-widest uppercase mb-2" style={{ color: "var(--signal)" }}>
+        Departures
+      </p>
+      <h1 className="font-display text-3xl mb-6">Open roles</h1>
 
-      {message && <p className="mb-4 text-sm text-blue-700">{message}</p>}
+      {message && (
+        <p className="mb-4 text-sm px-4 py-2 panel" style={{ color: "var(--amber)" }}>{message}</p>
+      )}
 
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-8">
         <input
-          className="border p-2 rounded flex-1"
+          className="field"
           placeholder="Search by keyword..."
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
         />
-        <button onClick={loadJobs} className="border px-4 rounded">Search</button>
+        <button onClick={loadJobs} className="btn-ghost whitespace-nowrap">Search</button>
       </div>
 
       {me?.role === "EMPLOYER" && (
-        <form onSubmit={handlePostJob} className="border p-4 rounded mb-8 flex flex-col gap-2">
-          <h2 className="font-semibold">Post a job</h2>
-          <input className="border p-2 rounded" placeholder="Title" required
+        <form onSubmit={handlePostJob} className="panel p-6 mb-10 flex flex-col gap-3">
+          <h2 className="font-display text-lg mb-1">Post a job</h2>
+          <input className="field" placeholder="Title" required
             value={newJob.title} onChange={(e) => setNewJob({ ...newJob, title: e.target.value })} />
-          <textarea className="border p-2 rounded" placeholder="Description" required
+          <textarea className="field" placeholder="Description" required
             value={newJob.description} onChange={(e) => setNewJob({ ...newJob, description: e.target.value })} />
-          <input className="border p-2 rounded" placeholder="Location" required
+          <input className="field" placeholder="Location" required
             value={newJob.location} onChange={(e) => setNewJob({ ...newJob, location: e.target.value })} />
-          <select className="border p-2 rounded"
+          <select className="field"
             value={newJob.jobType} onChange={(e) => setNewJob({ ...newJob, jobType: e.target.value })}>
-            {JOB_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+            {JOB_TYPES.map((t) => <option key={t} value={t}>{t.replace("_", " ")}</option>)}
           </select>
-          <button className="bg-black text-white p-2 rounded">Post job</button>
+          <button className="btn-primary w-fit">Post job</button>
         </form>
       )}
 
-      <div className="flex flex-col gap-4">
-        {jobs.map((job) => (
-          <div key={job.id} className="border p-4 rounded">
-            <h3 className="font-bold">{job.title}</h3>
-            <p className="text-sm text-gray-600">{job.location} · {job.jobType} · posted by {job.postedBy.name}</p>
-            <p className="text-sm mt-2">{job.description}</p>
+      <div className="grid sm:grid-cols-2 gap-6">
+        {jobs.length === 0 && (
+          <p className="text-sm" style={{ color: "var(--chalk-dim)" }}>No roles posted yet.</p>
+        )}
+        {jobs.map((job, i) => (
+          <div
+            key={job.id}
+            className="panel card-hover animate-in p-6 flex flex-col"
+            style={{ animationDelay: `${i * 60}ms` }}
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <span className="badge badge-open">
+                <span className="pulse-dot w-1.5 h-1.5 rounded-full" style={{ background: "var(--signal)" }} />
+                Open
+              </span>
+            </div>
+            <h3 className="font-display text-xl mb-1">{job.title}</h3>
+            <p className="font-mono-tag text-xs mb-3" style={{ color: "var(--chalk-dim)" }}>
+              {job.location.toUpperCase()} · {job.jobType.replace("_", " ")} · POSTED BY {job.postedBy.name.toUpperCase()}
+            </p>
+            <p className="text-sm mb-4 flex-1" style={{ color: "var(--chalk)" }}>{job.description}</p>
 
-            <div className="flex gap-3 mt-3 text-sm">
+            <div className="flex gap-4 text-sm">
               {me?.role === "CANDIDATE" && (
-                <button className="underline" onClick={() => setApplyingTo(job.id)}>Apply</button>
+                <button className="underline" style={{ color: "var(--amber)" }} onClick={() => setApplyingTo(job.id)}>
+                  Apply
+                </button>
               )}
               {me && (
-                <a href={`/jobs/${job.id}/applicants`} className="underline">View applicants</a>
+                <Link href={`/jobs/${job.id}/applicants`} className="underline" style={{ color: "var(--chalk-dim)" }}>
+                  View applicants
+                </Link>
               )}
             </div>
 
             {applyingTo === job.id && (
-              <form onSubmit={(e) => handleApply(job.id, e)} className="mt-3 flex flex-col gap-2">
-                <input className="border p-2 rounded" placeholder="Resume link (URL)" required
+              <form onSubmit={(e) => handleApply(job.id, e)} className="mt-4 flex flex-col gap-2">
+                <input className="field" placeholder="Resume link (URL)" required
                   value={applyForm.resumeLink}
                   onChange={(e) => setApplyForm({ ...applyForm, resumeLink: e.target.value })} />
-                <textarea className="border p-2 rounded" placeholder="Note (optional)"
+                <textarea className="field" placeholder="Note (optional)"
                   value={applyForm.note}
                   onChange={(e) => setApplyForm({ ...applyForm, note: e.target.value })} />
-                <button className="bg-black text-white p-2 rounded w-fit">Submit application</button>
+                <button className="btn-primary w-fit">Submit application</button>
               </form>
             )}
           </div>

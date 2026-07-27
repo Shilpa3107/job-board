@@ -28,15 +28,23 @@ export default function ApplicantsPage() {
   }, [jobId]);
 
   return (
-    <main className="max-w-2xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">Applicants</h1>
-      {error && <p className="text-red-600">{error}</p>}
-      <div className="flex flex-col gap-4">
+    <main className="max-w-2xl mx-auto px-6 py-12">
+      <p className="font-mono-tag text-xs tracking-widest uppercase mb-2" style={{ color: "var(--signal)" }}>
+        Arrivals
+      </p>
+      <h1 className="font-display text-3xl mb-6">Applicants</h1>
+      {error && (
+        <p className="panel p-4 text-sm" style={{ color: "var(--danger)" }}>{error}</p>
+      )}
+      <div className="panel">
         {applicants.map((a) => (
-          <div key={a.id} className="border p-4 rounded">
-            <p className="font-semibold">{a.candidate.name} ({a.candidate.email})</p>
-            <a href={a.resumeLink} className="underline text-sm" target="_blank">Resume</a>
-            {a.note && <p className="text-sm mt-1">{a.note}</p>}
+          <div key={a.id} className="board-row px-6 py-5">
+            <p className="font-display text-lg">{a.candidate.name}</p>
+            <p className="font-mono-tag text-xs" style={{ color: "var(--chalk-dim)" }}>{a.candidate.email}</p>
+            <a href={a.resumeLink} className="underline text-sm" style={{ color: "var(--amber)" }} target="_blank" rel="noreferrer">
+              Resume
+            </a>
+            {a.note && <p className="text-sm mt-2">{a.note}</p>}
           </div>
         ))}
       </div>

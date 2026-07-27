@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -33,36 +34,35 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="max-w-md mx-auto mt-16 p-6">
-      <h1 className="text-2xl font-bold mb-6">Log in</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          className="border p-2 rounded"
-          type="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-          required
-        />
-        <input
-          className="border p-2 rounded"
-          type="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-          required
-        />
-        {error && <p className="text-red-600 text-sm">{error}</p>}
-        <button
-          disabled={loading}
-          className="bg-black text-white p-2 rounded disabled:opacity-50"
-        >
-          {loading ? "Logging in..." : "Log in"}
-        </button>
-      </form>
-      <p className="mt-4 text-sm">
-        No account yet? <a href="/signup" className="underline">Sign up</a>
-      </p>
+    <main className="max-w-md mx-auto mt-16 px-6">
+      <div className="panel p-8">
+        <h1 className="font-display text-2xl mb-6">Log in</h1>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            className="field"
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            required
+          />
+          <input
+            className="field"
+            type="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            required
+          />
+          {error && <p className="text-sm" style={{ color: "var(--danger)" }}>{error}</p>}
+          <button disabled={loading} className="btn-primary">
+            {loading ? "Logging in..." : "Log in"}
+          </button>
+        </form>
+        <p className="mt-5 text-sm" style={{ color: "var(--chalk-dim)" }}>
+          No account yet? <Link href="/signup" className="underline" style={{ color: "var(--amber)" }}>Sign up</Link>
+        </p>
+      </div>
     </main>
   );
 }

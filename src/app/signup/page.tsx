@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -33,51 +34,50 @@ export default function SignupPage() {
   }
 
   return (
-    <main className="max-w-md mx-auto mt-16 p-6">
-      <h1 className="text-2xl font-bold mb-6">Create an account</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          className="border p-2 rounded"
-          placeholder="Full name"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          required
-        />
-        <input
-          className="border p-2 rounded"
-          type="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-          required
-        />
-        <input
-          className="border p-2 rounded"
-          type="password"
-          placeholder="Password (min 8 characters)"
-          value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-          required
-        />
-        <select
-          className="border p-2 rounded"
-          value={form.role}
-          onChange={(e) => setForm({ ...form, role: e.target.value })}
-        >
-          <option value="CANDIDATE">I'm looking for a job</option>
-          <option value="EMPLOYER">I'm hiring</option>
-        </select>
-        {error && <p className="text-red-600 text-sm">{error}</p>}
-        <button
-          disabled={loading}
-          className="bg-black text-white p-2 rounded disabled:opacity-50"
-        >
-          {loading ? "Creating account..." : "Sign up"}
-        </button>
-      </form>
-      <p className="mt-4 text-sm">
-        Already have an account? <a href="/login" className="underline">Log in</a>
-      </p>
+    <main className="max-w-md mx-auto mt-16 px-6">
+      <div className="panel p-8">
+        <h1 className="font-display text-2xl mb-6">Create an account</h1>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            className="field"
+            placeholder="Full name"
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            required
+          />
+          <input
+            className="field"
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            required
+          />
+          <input
+            className="field"
+            type="password"
+            placeholder="Password (min 8 characters)"
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            required
+          />
+          <select
+            className="field"
+            value={form.role}
+            onChange={(e) => setForm({ ...form, role: e.target.value })}
+          >
+            <option value="CANDIDATE">I&apos;m looking for a job</option>
+            <option value="EMPLOYER">I&apos;m hiring</option>
+          </select>
+          {error && <p className="text-sm" style={{ color: "var(--danger)" }}>{error}</p>}
+          <button disabled={loading} className="btn-primary">
+            {loading ? "Creating account..." : "Sign up"}
+          </button>
+        </form>
+        <p className="mt-5 text-sm" style={{ color: "var(--chalk-dim)" }}>
+          Already have an account? <Link href="/login" className="underline" style={{ color: "var(--amber)" }}>Log in</Link>
+        </p>
+      </div>
     </main>
   );
 }

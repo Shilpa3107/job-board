@@ -52,3 +52,5 @@ skills-lock.json
 *-test.json
 *-test-wrong.json
 *-signup.json
+.vercel
+.env*

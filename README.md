@@ -5,7 +5,7 @@ roles; candidates browse, search, and apply. Employers can view and manage
 applicants for jobs they've posted.
 
 **Live app:** https://job-board-po7p.vercel.app/
-**Repo:** https://github.com/Shilpa3107/jobboard
+**Repo:** https://github.com/Shilpa3107/job-board/
 
 ## Stack
 
